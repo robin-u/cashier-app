@@ -1,11 +1,11 @@
 import tabulate
+
 class Transaction:
     # A list of dictionary to store item temporarily 
     cart_of_items = dict()
     
-    def __init__(self, customer_name, customer_id):
+    def __init__(self, customer_name):
         self.customer_name = customer_name
-        self.customer_id = customer_id
         
     # Customer input a new item to the transaction
     def add_item(self,
@@ -18,13 +18,14 @@ class Transaction:
         
         Args:
             items(list): A list of string containing the name of item(s)
-            quantity(list): A list of quantity of item, respective to items(list)
-            price(list): A list of of price of item, respective to items(list)
-            cart(dict): A dictionary representing the key as item name and\
+            quantities(list): A list of quantity of item, respective to items(list)
+            prices(list): A list of of price of item, respective to items(list)
+            cart(dict, optional): A dictionary representing the key as item name and\
                         its values to inform the quantity and price per item
         
         Returns:
-            cart_of_items(dict): Update the current cart with new item(s)
+            # cart_of_items(dict): Update the current cart with new item(s)
+            None
         """
 
         for item, quantity, price in zip(items, quantities, prices):
@@ -33,8 +34,7 @@ class Transaction:
             else:
                 cart[item] = {'quantity': quantity, 'price': price}
         
-        print(f"{item} has been added to the cart!")
-        return self.cart_of_items
+        print(f"{item} has been added to the cart!\n")
 
     # Customer updates the current item name to a new one
     def update_item_name(self, current_name: str, new_name: str):
@@ -86,13 +86,13 @@ class Transaction:
             raise Exception("An error occured, see details ->", err.args)
 
     # Customer updates the current price of the item
-    def update_item_price(self, item_name: str, new_price: int or float):
+    def update_item_price(self, item_name: str, new_price: float):
         """
         Update an item price
         
         Args:
             item_name(str): An item name  
-            new_price(int or float): New price for the item
+            new_price(float): New price for the item
         
         Returns:
             None
@@ -100,7 +100,7 @@ class Transaction:
 
         try:
             if item_name in self.cart_of_items:
-                if type(new_price) == int or type(new_price) == float:
+                if type(new_price) == float:
                     self.cart_of_items[item_name]['price'] = new_price
                 else:
                     raise TypeError()
@@ -169,4 +169,4 @@ class Transaction:
             None
             str: "✅ Order has been completed" or "❌ There's something missing"
         """
-        
+        print(self.cart_of_items)
