@@ -22,8 +22,24 @@ while True:
                     pass
             continue
         elif prompt == "update" or prompt == "u":
-            update_prompt = input("What do you want to update?\n")
-            
+            item = input("What item do you want to update?\n")
+            if item in app.cart_of_items:
+                update_prompt = input("What do you want to update?\n")
+                if update_prompt == "name":
+                    new_name = input("What'll be the new name?\n")
+                    app.update_item_name(item, new_name)
+                elif update_prompt == "quantity":
+                    new_quantity = int(input("What'll be the new quantity?\n"))
+                    app.update_item_qty(item, new_quantity)
+                elif update_prompt == "price":
+                    new_price = float(input("What'll be the new price?\n"))
+                    app.update_item_price(item, new_price)
+            else:
+                print("Item not yet in cart. Add it first")
+                continue
+        elif prompt == "check" or prompt == "c":
+            print(app.cart_of_items)
+            app.check_order()
         elif prompt == "quit" or prompt == "q":
             break
         else:
@@ -32,6 +48,8 @@ while True:
     except Exception:
         print("\n====================INSTRUCTION====================")
         print("Type \"add\" or \"a\" to add a new item to the cart")
+        print("Type \"update\" or \"u\" to update an item from the cart")
+        print("Type \"check\" or \"c\" to check the items in cart")
         print("Type \"quit\" or \"q\" to quit")
         print("====================INSTRUCTION====================\n")
         pass

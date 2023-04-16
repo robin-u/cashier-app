@@ -1,4 +1,4 @@
-import tabulate
+from tabulate import tabulate
 
 class Transaction:
     # A list of dictionary to store item temporarily 
@@ -12,7 +12,7 @@ class Transaction:
                 items: list[str],
                 quantities: list[int],
                 prices: list[float],
-                cart: dict[str, dict[str, int or float]] = cart_of_items) -> dict[str, dict[str, int or float]]:
+                cart: dict[str, dict[str, float]] = cart_of_items) -> dict[str, dict[str, float]]:
         """
         Add new item with the item quantity & price to the transaction
         
@@ -30,9 +30,9 @@ class Transaction:
 
         for item, quantity, price in zip(items, quantities, prices):
             if item in cart:
-                cart[item]['quantity'] += quantity
+                cart[item][0] = quantity
             else:
-                cart[item] = {'quantity': quantity, 'price': price}
+                cart[item] = [quantity, price]
         
         print(f"{item} has been added to the cart!\n")
 
@@ -53,6 +53,7 @@ class Transaction:
             if current_name in self.cart_of_items:
                 if type(new_name) == str:
                     self.cart_of_items[current_name] = self.cart_of_items[new_name]
+                    print("The item name has been updated!\n")
                 else:
                     raise TypeError()
         except TypeError:
@@ -78,6 +79,7 @@ class Transaction:
             if item_name in self.cart_of_items:
                 if type(new_qty) == int:
                     self.cart_of_items[item_name]['quantity'] = new_qty
+                    print("The item quantity has been updated!\n")
                 else:
                     raise TypeError()
         except TypeError:
@@ -102,6 +104,7 @@ class Transaction:
             if item_name in self.cart_of_items:
                 if type(new_price) == float:
                     self.cart_of_items[item_name]['price'] = new_price
+                    print("The item price has been updated!\n")
                 else:
                     raise TypeError()
         except TypeError:
@@ -124,6 +127,7 @@ class Transaction:
         try:
             if item_name in self.cart_of_items:
                 self.cart_of_items.pop(item_name)
+                print("The item has been deleted from cart!\n")
         except Exception as err:
             raise Exception("An error occured, see details ->", err.args)
 
@@ -167,6 +171,6 @@ class Transaction:
         
         Returns:
             None
-            str: "✅ Order has been completed" or "❌ There's something missing"
         """
-        print(self.cart_of_items)
+
+        print(tabulate(self.cart_of_items, headers="keys", showindex=["quantity", "price"]))
